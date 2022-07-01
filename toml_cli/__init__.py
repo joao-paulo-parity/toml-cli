@@ -10,13 +10,12 @@ app = typer.Typer()
 
 
 @app.command("get")
-def get(key: Optional[str] = typer.Argument(None), toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
+def get(key: List[str] = [], toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
     """Get a value from a toml file"""
     toml_part = tomlkit.parse(toml_path.read_text())
 
-    if key is not None:
-        for key_part in key.split("."):
-            toml_part = toml_part[key_part]
+    for key_part in key:
+        toml_part = toml_part[key_part]
 
     typer.echo(json.dumps(toml_part))
 
