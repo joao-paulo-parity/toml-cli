@@ -10,7 +10,7 @@ app = typer.Typer()
 
 
 @app.command("get")
-def get(key: List[str] = [], toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
+def get(key: List[str], toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
     """Get a value from a toml file"""
     toml_part = tomlkit.parse(toml_path.read_text())
 
