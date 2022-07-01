@@ -1,5 +1,5 @@
 import pathlib
-from typing import Optional
+from typing import Optional, List
 
 import tomlkit
 import tomlkit.exceptions
@@ -67,17 +67,17 @@ def add_section(
 
 
 @app.command("unset")
-def unset(key: str, toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
+def unset(key: List[str], toml_path: pathlib.Path = typer.Option(pathlib.Path("config.toml"))):
     """Unset a value from a toml file"""
     toml_part = toml_file = tomlkit.parse(toml_path.read_text())
 
-    for key_part in key.split(".")[:-1]:
+    for key_part in key[:-1]:
         try:
             toml_part = toml_part[key_part]
         except tomlkit.exceptions.NonExistentKey:
             typer.echo(f"Key {key} can not unset", err=True)
 
-    del toml_part[key.split(".")[-1]]
+    del toml_part[key[-1]]
 
     toml_path.write_text(tomlkit.dumps(toml_file))
 
